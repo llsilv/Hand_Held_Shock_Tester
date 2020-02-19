@@ -4,7 +4,7 @@
  * Created: 19-02-2020 13:58:15
  * Author : mikke
  */ 
-
+#define F_CPU 16000000UL
 
 
 //include standard libraries
