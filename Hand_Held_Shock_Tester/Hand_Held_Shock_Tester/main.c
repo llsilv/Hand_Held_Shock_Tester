@@ -6,6 +6,7 @@
  */ 
 #define F_CPU 16000000UL
 hello
+hello2
 
 //include standard libraries
 #include <avr/io.h>
