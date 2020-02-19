@@ -5,7 +5,7 @@
  * Author : mikke
  */ 
 #define F_CPU 16000000UL
-
+hello
 
 //include standard libraries
 #include <avr/io.h>
