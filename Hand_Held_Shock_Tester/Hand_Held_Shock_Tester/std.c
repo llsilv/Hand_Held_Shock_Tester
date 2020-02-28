@@ -10,9 +10,36 @@
 #include <avr/interrupt.h>
 
 
+void register_setup()
+{
+	cli();
+	//Timer0 setup
+	TCCR0B |= 0x03; //Sets prescaler for timer0 to 64
+	TIMSK0 |= 0x01; //Enables interupt on timer0 overflow
+
+	//Port setup
+	DDRD = 0x87; //I/O board:PD4?7 as inputs
+	DDRC = 0xF0; //I/O board PC0?3 as inputs, for buttons
+	DDRB = 0xF0;
+	PORTB = 0x00;
+	PORTC = 0x30; // Enable internal pull at PC0..3 inputs
+	PORTD = 0x00; // Set output LEDs to off
+	
+	ADMUX = 0x40; // sets Vref to Avcc
+	ADCSRA = 0x87; // Enables ADC and sets prescaler to 128
+	
+	EECR = 0x00;
+	
+	EICRA |= (1<<ISC11) | (1<<ISC10); //sets int1 to trigger on rising edge
+	EIMSK |= (1<<INT1); //enables int1 external interrupt
+	
+	sei();
+}
+
 volatile unsigned long timer0_overflow_count = 0;
 volatile unsigned long timer0_millis = 0;
 static unsigned char timer0_fract = 0;
+
 
 ISR (TIMER0_OVF_vect) // timer0 overflow interrupt
 {

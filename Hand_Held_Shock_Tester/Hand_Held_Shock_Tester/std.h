@@ -9,7 +9,9 @@
 #ifndef STD_H_
 #define STD_H_
 
+#ifndef F_CPU
 #define F_CPU 16000000UL
+#endif
 
 #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
@@ -26,6 +28,7 @@
 
 unsigned long millis(void);
 unsigned int read_adc(char);
+void register_setup();
 
 
 #endif /* STD_H_ */
