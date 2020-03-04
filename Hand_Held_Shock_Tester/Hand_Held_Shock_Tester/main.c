@@ -8,7 +8,7 @@
 #define vref 4.8
 #define F_CPU 16000000UL
 #define analog_sensitivity 0.33
-
+#define zero_g_voltage 1.5
 //include standard libraries
 #include <avr/io.h>
 #include <stdio.h>
@@ -45,7 +45,7 @@ void convert_raw_to_g(int x_raw, int y_raw, int z_raw, float *x_g, float *y_g, f
 
 void conversion(int raw, float*g)
 {
-	*g  = raw * (vref/1024)*analog_sensitivity;
+	*g  = ((raw * (vref/1024))-zero_g_voltage)*analog_sensitivity;
 }
 
 void get_analog_accelerometer(int *x, int *y, int *z)
