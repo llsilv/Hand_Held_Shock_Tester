@@ -5,10 +5,20 @@
  *  Author: mikkel
  */ 
 #include "std.h"
+#include "i2cmaster.h"
 #include <stdio.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+void initialse()
+{
+	register_setup();
+	i2c_init();
+	i2c_start(accel_i2c_adr_a0_write);
+	i2c_write(0x03);
+	
+	i2c_stop();
+}
 
 void register_setup()
 {
@@ -72,4 +82,42 @@ unsigned int read_adc(char channel)
 	ADCSRA |= (1<<ADSC); // Starts conversion
 	while(ADCSRA & (1<<ADSC)); //"aits for conversion to complete
 	return ADC; //Returns value from conversion
+}
+
+void get_data_accel(int *x, int *y, int *z)
+{
+	int raw;
+	i2c_start(accel_i2c_adr_a0);
+	i2c_write(OUT_X_MSB);
+	*x = i2c_readAck();
+	*y = i2c_readAck();
+	*z = i2c_readNak();
+
+	i2c_stop();
+
+}
+
+void accel_calibrate()
+{
+	char x, y, z;
+	i2c_start(accel_i2c_adr_a0_read);
+	i2c_write(OUT_X_MSB);
+	x = i2c_readAck();
+	y = i2c_readAck();
+	z = i2c_readNak();
+	i2c_stop();
+	i2c_start(accel_i2c_adr_a0_write);
+	i2c_write(OFF_X);
+	i2c_write(-x);
+	i2c_stop();
+	
+	i2c_start(accel_i2c_adr_a0_write);
+	i2c_write(OFF_X);
+	i2c_write(-x);
+	i2c_stop();
+	
+	i2c_start(accel_i2c_adr_a0_write);
+	i2c_write(OFF_Z);
+	i2c_write(32-z);
+	i2c_stop();
 }
