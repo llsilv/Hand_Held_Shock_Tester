@@ -26,9 +26,35 @@
 #define FRACT_INC ((MICROSECONDS_PER_TIMER0_OVERFLOW % 1000) >> 3)
 #define FRACT_MAX (1000 >> 3)
 
+#define accel_i2c_adr_a0 0x38
+#define accel_i2c_adr_a0_read 0x39
+#define accel_i2c_adr_a0_write 0x38
+#define accel_i2c_adr_a1_read 0x3B
+#define accel_i2c_adr_a1_write 0x3A
+#define accel_i2c_adr_a1 0x1D
+#define OUT_X_MSB 0x01
+#define OUT_X_LSB 0x02
+#define OUT_Y_MSB 0x03
+#define OUT_Y_LSB 0x04
+#define OUT_Z_MSB 0x05
+#define OUT_Z_LSB 0x06
+#define F_SETUP 0x09
+#define XYZ_DATA_CFG 0x0E
+#define CTRL_REG1 0x2A
+#define CTRL_REG2 0x2B
+
+#define OFF_X 0x30
+#define OFF_Y 0x31
+#define OFF_Z 0x0D
+
+void initialse();
 unsigned long millis(void);
 unsigned int read_adc(char);
 void register_setup();
-
+void get_data_accel(int *x, int *y, int *z);
+//void accel_calibrate();
+void MMA8451_init();
+void i2c_write_reg(char device, char reg, char data);
+char i2c_read_reg(char device, char reg);
 
 #endif /* STD_H_ */
