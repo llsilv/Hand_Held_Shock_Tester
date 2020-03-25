@@ -44,7 +44,7 @@ int main(void)
 	//printf("x=%d y=%d z=%d",read_adc(0),read_adc(1),read_adc(2));
 	get_data_accel(&x_raw,&y_raw,&z_raw);
 	//LCD_set_cursor(0,2);
-	printf("x=%d y=%d z=%d \n", x_raw,y_raw,z_raw);
+	printf("x=%0.2f y=%0.2f z=%0.2f \n", (float)x_raw/4096,(float)y_raw/4096,(float)z_raw/4096);
     }
 }
 
