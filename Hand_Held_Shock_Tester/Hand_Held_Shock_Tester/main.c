@@ -58,8 +58,8 @@ int main(void)
 			
 			for (int n = 0; n<6 ;n++)
 			{
-				b = test[n]<<8;
-				transdata1 = test[n]>>8;
+				b = sensor_values[n]<<8;
+				transdata1 = sensor_values[n]>>8;
 				transdata2 =  b>>8;
 				checksum ^= transdata1;
 				checksum ^= transdata2; 
