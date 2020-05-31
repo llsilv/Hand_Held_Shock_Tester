@@ -16,6 +16,8 @@ void initialse()
 	register_setup();
 	i2c_init();
 	MMA8451_init();
+	USART_init();
+	sei();
 }
 
 void MMA8451_init()
@@ -143,4 +145,23 @@ char i2c_read_reg(char device, char reg)
 	char data = i2c_readNak();
 	i2c_stop();
 	return data;
+}
+void USART_init(void)
+{
+	UBRR0H = (uint8_t)(BAUD_PRESCALER>>8);
+	UBRR0L = (uint8_t)(BAUD_PRESCALER);
+	UCSR0B = (1<<RXEN0) | (1<<TXEN0);
+	UCSR0C = (1<<UCSZ00) | (1<<UCSZ01);
+	UCSR0B |= (1<<RXCIE0);
+}
+ISR(USART_RX_vect)
+{
+	volatile uint8_t received_data = UDR0;
+	if(received_data == 1) transmit = 1;
+	if(received_data == 0) transmit = 0;
+}
+void USART_send(uint8_t data)
+{
+	while(!(UCSR0A & (1<<UDRE0)));
+	UDR0 = data;
 }
