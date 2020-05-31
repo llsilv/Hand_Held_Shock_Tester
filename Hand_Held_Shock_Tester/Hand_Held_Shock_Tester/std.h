@@ -56,5 +56,6 @@ void get_data_accel(int *x, int *y, int *z);
 void MMA8451_init();
 void i2c_write_reg(char device, char reg, char data);
 char i2c_read_reg(char device, char reg);
+void USART_send(uint8_t data);
 
 #endif /* STD_H_ */
